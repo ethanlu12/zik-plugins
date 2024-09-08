@@ -1,93 +1,148 @@
 openapi: 3.0.1
 info:
-  title: TODO Plugin
-  description: A plugin that allows the user to create and manage a TODO list. If you do not know the user's username, ask them first before making queries to the plugin. Otherwise, use the username "global".
-  version: 'v1'
+  title: Chat App API
+  description: This API provides chat functionalities using LangChain, ChromaDB, and OpenAI GPT models.
+  version: 1.0.0
 servers:
-  - url: http://localhost:5002
+  - url: https://c1db-47-153-87-242.ngrok-free.app
 paths:
-  /todos/{username}:
-    get:
-      operationId: getTodos
-      summary: Get the list of todos
-      parameters:
-      - in: path
-        name: username
-        schema:
-            type: string
+  /message:
+    post:
+      summary: Handle incoming chat messages
+      description: This endpoint receives a user message, processes it using the chat history and context, and returns the system's response.
+      requestBody:
         required: true
-        description: The name of the user.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
       responses:
-        "200":
-          description: OK
+        200:
+          description: A response from the system based on the chat history.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getTodosResponse'
+                type: object
+                properties:
+                  message_type:
+                    type: string
+                    example: aimessage
+                  content:
+                    type: string
+                    example: "Here is the response."
+        400:
+          description: Bad request (e.g., invalid input or validation error).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /get_user_sessions:
     post:
-      operationId: addTodo
-      summary: Add a todo to the list
-      parameters:
-      - in: path
-        name: username
-        schema:
-            type: string
-        required: true
-        description: The name of the user.
+      summary: Retrieve all session IDs for a user
+      description: This endpoint returns all session IDs for the given user.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/addTodoRequest'
+              $ref: '#/components/schemas/FindSessionIDsRequest'
       responses:
-        "200":
-          description: OK
-    delete:
-      operationId: deleteTodo
-      summary: Delete a todo from the list
-      parameters:
-      - in: path
-        name: username
-        schema:
-            type: string
-        required: true
-        description: The name of the user.
+        200:
+          description: A list of session IDs for the user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessions:
+                    type: array
+                    items:
+                      type: string
+        400:
+          description: Bad request (e.g., invalid input).
+  /get_conversation:
+    post:
+      summary: Retrieve the conversation for a specific session
+      description: This endpoint returns the conversation history for a given user and session.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/deleteTodoRequest'
+              $ref: '#/components/schemas/GetConversation'
       responses:
-        "200":
-          description: OK
-
+        200:
+          description: The conversation history for the specified session.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  conversation:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+  /get_new_session:
+    post:
+      summary: Create a new session for a user
+      description: This endpoint creates and returns a new session ID for the user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FindSessionIDsRequest'
+      responses:
+        200:
+          description: A new session ID for the user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  new_session:
+                    type: string
 components:
   schemas:
-    getTodosResponse:
+    MessageRequest:
       type: object
       properties:
-        todos:
-          type: array
-          items:
-            type: string
-          description: The list of todos.
-    addTodoRequest:
-      type: object
-      required:
-      - todo
-      properties:
-        todo:
+        user_id:
           type: string
-          description: The todo to add to the list.
-          required: true
-    deleteTodoRequest:
+          example: "user123"
+        user_message:
+          type: string
+          example: "Hello, how are you?"
+        session_id:
+          type: string
+          example: "session123"
+    FindSessionIDsRequest:
       type: object
-      required:
-      - todo_idx
       properties:
-        todo_idx:
-          type: integer
-          description: The index of the todo to delete.
-          required: true
+        user_id:
+          type: string
+          example: "user123"
+    GetConversation:
+      type: object
+      properties:
+        user_id:
+          type: string
+          example: "user123"
+        session_id:
+          type: string
+          example: "session123"
