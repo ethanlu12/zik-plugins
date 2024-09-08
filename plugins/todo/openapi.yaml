@@ -4,7 +4,7 @@ info:
   description: This API provides chat functionalities using LangChain, ChromaDB, and OpenAI GPT models.
   version: 1.0.0
 servers:
-  - url: https://c1db-47-153-87-242.ngrok-free.app
+  - url: https://c1db-47-153-87-242.ngrok-free.app/api
 paths:
   /message:
     post:
