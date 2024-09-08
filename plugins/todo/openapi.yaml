@@ -4,9 +4,9 @@ info:
   description: This API provides chat functionalities using LangChain, ChromaDB, and OpenAI GPT models.
   version: 1.0.0
 servers:
-  - url: https://c1db-47-153-87-242.ngrok-free.app/api
+  - url: https://c1db-47-153-87-242.ngrok-free.app
 paths:
-  /message:
+  /api/message:
     post:
       summary: Handle incoming chat messages
       description: This endpoint receives a user message, processes it using the chat history and context, and returns the system's response.
@@ -50,7 +50,7 @@ paths:
                   error:
                     type: string
                     example: "An unexpected error occurred."
-  /get_user_sessions:
+  /api/get_user_sessions:
     post:
       summary: Retrieve all session IDs for a user
       description: This endpoint returns all session IDs for the given user.
@@ -83,7 +83,7 @@ paths:
                   error:
                     type: string
                     example: "Invalid user ID."
-  /get_conversation:
+  /api/get_conversation:
     post:
       summary: Retrieve the conversation for a specific session
       description: This endpoint returns the conversation history for a given user and session.
