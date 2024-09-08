@@ -1,19 +1,19 @@
 {
   "schema_version": "v1",
-  "name_for_human": "TODO Plugin",
-  "name_for_model": "todo",
-  "supported_models": ["gpt-4", "gpt-3.5-turbo"],
-  "description_for_human": "Plugin for managing a TODO list. You can add, remove and view your TODOs.",
-  "description_for_model": "Plugin for managing a TODO list. You can add, remove and view your TODOs.",
+  "name_for_human": "Chat History Plugin",
+  "name_for_model": "chat_history_manager",
+  "supported_models": ["gpt-4", "gpt-4o"],
+  "description_for_human": "Plugin for managing chat sessions, retrieving conversations, and interacting with a conversational AI system.",
+  "description_for_model": "Plugin for managing user chat sessions, retrieving session IDs, fetching conversation history, and creating new sessions. You can process and respond to user messages based on chat history and context.",
   "auth": {
     "type": "none"
   },
   "api": {
     "type": "openapi",
-    "url": "https://raw.githubusercontent.com/zik-sh/plugins/main/plugins/todo/openapi.yaml",
+    "url": "https://raw.githubusercontent.com/ethanlu12/zik-plugins/main/plugins/todo/openapi.yaml",
     "is_user_authenticated": false
   },
-  "logo_url": "https://raw.githubusercontent.com/zik-sh/plugins/main/plugins/todo/logo.png",
-  "contact_email": "support@example.com",
-  "legal_info_url": "http://www.example.com/legal"
+  "logo_url": "https://yourdomain.com/logo.png",
+  "contact_email": "support@yourdomain.com",
+  "legal_info_url": "http://www.yourdomain.com/legal"
 }
