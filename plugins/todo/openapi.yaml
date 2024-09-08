@@ -39,6 +39,7 @@ paths:
                 properties:
                   error:
                     type: string
+                    example: "Validation error: Too many requests."
         500:
           description: Unexpected error
           content:
@@ -48,6 +49,7 @@ paths:
                 properties:
                   error:
                     type: string
+                    example: "An unexpected error occurred."
   /get_user_sessions:
     post:
       summary: Retrieve all session IDs for a user
@@ -70,8 +72,17 @@ paths:
                     type: array
                     items:
                       type: string
+                    example: ["session123", "session124"]
         400:
           description: Bad request (e.g., invalid input).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid user ID."
   /get_conversation:
     post:
       summary: Retrieve the conversation for a specific session
@@ -97,6 +108,19 @@ paths:
                       properties:
                         message:
                           type: string
+                      example:
+                        - message: "Hello, how are you?"
+                        - message: "I'm fine, thank you."
+        400:
+          description: Bad request (e.g., invalid input or validation error).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid session ID."
   /get_new_session:
     post:
       summary: Create a new session for a user
@@ -117,10 +141,25 @@ paths:
                 properties:
                   new_session:
                     type: string
+                    example: "session125"
+        400:
+          description: Bad request (e.g., invalid input).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid user ID."
 components:
   schemas:
     MessageRequest:
       type: object
+      required:
+        - user_id
+        - user_message
+        - session_id
       properties:
         user_id:
           type: string
@@ -133,12 +172,17 @@ components:
           example: "session123"
     FindSessionIDsRequest:
       type: object
+      required:
+        - user_id
       properties:
         user_id:
           type: string
           example: "user123"
     GetConversation:
       type: object
+      required:
+        - user_id
+        - session_id
       properties:
         user_id:
           type: string
